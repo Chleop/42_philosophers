@@ -12,17 +12,6 @@
 
 #include "philo.h"
 
-void	lock_right_fork(t_philo *philo)
-{
-	if (!philo->data->stop)
-	{
-	if (philo->id == 1)
-		pthread_mutex_lock(&(philo->data->fork[philo->data->nb_ph - 1]));
-	else
-		pthread_mutex_lock(&(philo->data->fork[philo->id - 2]));
-	}
-}
-
 void	unlock_both_forks(t_philo *philo)
 {
 	if (philo->id == 1)
@@ -46,9 +35,25 @@ void	check_death(t_philo *philo)
 	return ;
 }
 
-int	ft_time_left(t_philo *philo)
+int	lock_both_forks(t_philo *philo)
 {
-	return (philo->data->tt_die - (ft_time() - philo->last_meal));
+	if (philo->data->nb_ph == 1)
+		return (0);
+	if (((ft_time() - philo->last_meal) <= philo->data->tt_die) && (!philo->data->stop))
+	{
+		pthread_mutex_lock(&(philo->data->fork[philo->id - 1]));
+		if (((ft_time() - philo->last_meal) <= philo->data->tt_die) && (!philo->data->stop))
+		{
+			if (philo->id != 1)
+				pthread_mutex_lock(&(philo->data->fork[philo->id - 2]));
+			else
+				pthread_mutex_lock(&(philo->data->fork[philo->data->nb_ph - 1]));	
+			return (1);
+		}
+		else
+			pthread_mutex_unlock(&(philo->data->fork[philo->id - 1]));
+	}
+	return (0);
 }
 
 void	*f(void *arg)
@@ -59,26 +64,30 @@ void	*f(void *arg)
 	if (philo->id % 2 == 0)
 	{
 		printf("%ld %d is thinking\n", ft_time(), philo->id);
-		usleep(1000 * (philo->data->tt_eat));
+		usleep(5000);
+		// usleep(1000 * (philo->data->tt_eat));
 	}
-	while (((ft_time() - philo->last_meal) <= philo->data->tt_die) && (!philo->data->stop))
+	// else if ((philo->data->nb_ph % 2 == 1) && (philo->id == philo->data->nb_ph))
+	// {
+	// 	printf("%ld %d is thinking\n", ft_time(), philo->id);
+	// 	if ((time_left(philo) >= (2 * philo->data->tt_eat))
+	// 		&& (!philo->data->stop))
+	// 		usleep(1000 * 2 *(philo->data->tt_eat));
+	// 	else if (!philo->data->stop)
+	// 		usleep(1000 * time_left(philo));
+	// }
+	while ((time_left(philo) > 0) && (!philo->data->stop))
 	{
-		lock_right_fork(philo);
-		if (((!philo->data->stop) && (philo->data->nb_ph != 1) && (pthread_mutex_lock(&(philo->data->fork[philo->id - 1])) == 0)))
-		{
-			ft_eat(philo);
-			unlock_both_forks(philo);
-			if (((ft_time() - philo->last_meal) > philo->data->tt_die) || (philo->data->stop))
-				break;
-			if (philo->data->count_full >= philo->data->nb_ph)
-				return (NULL);
-			ft_sleep(philo);
-			ft_think(philo);
-		}
-		else if (philo->data->nb_ph == 1)
-			pthread_mutex_unlock(&(philo->data->fork[0]));
-		else
-			pthread_mutex_unlock(&(philo->data->fork[philo->id - 2]));
+		if (!lock_both_forks(philo))
+			break ;
+		ft_eat(philo);
+		unlock_both_forks(philo);
+		if ((time_left(philo) < 0)|| (philo->data->stop))
+			break;
+		if (philo->data->count_full >= philo->data->nb_ph)
+			return (NULL);
+		ft_sleep(philo);
+		ft_think(philo);
 	}
 	check_death(philo);
 	return (NULL);

@@ -30,10 +30,22 @@ void	ft_eat(t_philo *philo)
 
 void	ft_sleep(t_philo *philo)
 {
-	if (!philo->data->stop)
+	if ((!philo->data->stop) && (philo->data->nb_ph % 2 == 0))
 	{
 		printf("%ld %d is sleeping\n", ft_time(), philo->id);
-		if ((time_left(philo) >= philo->data->tt_sleep) && (!philo->data->stop))
+		if ((time_left(philo) >= philo->data->tt_eat)
+			&& (time_left(philo) >= philo->data->tt_sleep)
+			&& (!philo->data->stop))
+			usleep(1000 * (philo->data->tt_sleep));
+		else if (!philo->data->stop)
+			usleep(1000 * time_left(philo));
+	}
+	else if (!philo->data->stop)
+	{
+		printf("%ld %d is sleeping\n", ft_time(), philo->id);
+		if ((time_left(philo) >= philo->data->tt_eat)
+			&& (time_left(philo) >= (2 * philo->data->tt_sleep))
+			&& (!philo->data->stop))
 			usleep(1000 * (philo->data->tt_sleep));
 		else if (!philo->data->stop)
 			usleep(1000 * time_left(philo));
@@ -43,7 +55,10 @@ void	ft_sleep(t_philo *philo)
 
 void	ft_think(t_philo *philo)
 {
-	if (!philo->data->stop)
+	if ((time_left(philo) >= 0) && (!philo->data->stop))
+	{
 		printf("%ld %d is thinking\n", ft_time(), philo->id);
+		usleep(1000);
+	}
 	return ;
 }
