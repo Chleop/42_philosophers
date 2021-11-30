@@ -14,7 +14,7 @@
 
 void	ft_eat(t_philo *philo)
 {
-	if (((ft_time() - philo->last_meal) <= philo->data->tt_die) && (!philo->data->stop))
+	if ((time_left(philo) >= 0) && (!philo->data->stop))
 	{
 		printf("%ld %d has taken a fork\n", ft_time(), philo->id);
 		printf("%ld %d has taken a fork\n", ft_time(), philo->id);
@@ -25,21 +25,18 @@ void	ft_eat(t_philo *philo)
 		philo->last_meal = ft_time();
 		usleep(1000 * philo->data->tt_eat);
 	}
-	return;
+	return ;
 }
 
 void	ft_sleep(t_philo *philo)
 {
-	long	time_unlapsed;
-	
 	if (!philo->data->stop)
 	{
 		printf("%ld %d is sleeping\n", ft_time(), philo->id);
-		time_unlapsed = ft_time() - philo->last_meal;
-		if ((time_unlapsed + philo->data->tt_sleep) > philo->data->tt_die)
-			usleep(1000 * (philo->data->tt_die - time_unlapsed));
-		else
-			usleep(1000 * (philo->data->tt_sleep - (time_unlapsed - philo->data->tt_eat)));
+		if ((time_left(philo) >= philo->data->tt_sleep) && (!philo->data->stop))
+			usleep(1000 * (philo->data->tt_sleep));
+		else if (!philo->data->stop)
+			usleep(1000 * time_left(philo));
 	}
 	return ;
 }
@@ -47,8 +44,6 @@ void	ft_sleep(t_philo *philo)
 void	ft_think(t_philo *philo)
 {
 	if (!philo->data->stop)
-	{
 		printf("%ld %d is thinking\n", ft_time(), philo->id);
-	}
 	return ;
 }

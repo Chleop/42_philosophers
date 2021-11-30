@@ -75,3 +75,8 @@ long	ft_time(void)
 	res = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	return (res);
 }
+
+int	time_left(t_philo *philo)
+{
+	return (philo->data->tt_die - (ft_time() - philo->last_meal));
+}

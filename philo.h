@@ -52,6 +52,7 @@ int		animate_phs(t_data *data);
 int		destroy_mutex(t_data *data);
 void	ft_free(t_data **data);
 long	ft_time(void);
+int		time_left(t_philo *philo);
 void	ft_eat(t_philo *philo);
 void	ft_sleep(t_philo *philo);
 void	ft_think(t_philo *philo);
