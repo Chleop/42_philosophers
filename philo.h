@@ -33,6 +33,7 @@ typedef struct s_data
 	int				max_meals;
 	int				count_full;
 	int				stop;
+	long			start_time;
 }	t_data;
 
 typedef struct s_philo
@@ -53,6 +54,7 @@ int		destroy_mutex(t_data *data);
 void	ft_free(t_data **data);
 long	ft_time(void);
 int		time_left(t_philo *philo);
+void	ft_wait(long x);
 void	ft_eat(t_philo *philo);
 void	ft_sleep(t_philo *philo);
 void	ft_think(t_philo *philo);

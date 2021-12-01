@@ -19,8 +19,8 @@ void	check_death(t_philo *philo)
 	if (!philo->data->stop)
 	{
 		philo->data->stop = 1;
-		to_death = ft_time();
-		usleep(100);
+		to_death = (ft_time() - philo->data->start_time);
+		ft_wait(1);
 		printf("%ld %d died\n", to_death, philo->id);
 	}
 	return ;
@@ -30,17 +30,17 @@ void	some_must_think_first(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		printf("%ld %d is thinking\n", ft_time(), philo->id);
-		usleep(1000 * (philo->data->tt_eat));
+		printf("%ld %d is thinking\n", (ft_time() - philo->data->start_time), philo->id);
+		ft_wait(philo->data->tt_eat);
 	}
 	else if ((philo->data->nb_ph != 1) && (philo->id == philo->data->nb_ph))
 	{
-		printf("%ld %d is thinking\n", ft_time(), philo->id);
+		printf("%ld %d is thinking\n", (ft_time() - philo->data->start_time), philo->id);
 		if ((time_left(philo) >= (2 * philo->data->tt_eat))
 			&& (!philo->data->stop))
-			usleep(1000 * 2 *(philo->data->tt_eat));
+			ft_wait(2 *(philo->data->tt_eat));
 		else if (!philo->data->stop)
-			usleep(1000 * time_left(philo));
+			ft_wait(time_left(philo));
 	}
 }
 
@@ -50,7 +50,7 @@ void	*f(void *arg)
 
 	philo = (t_philo *)arg;
 	some_must_think_first(philo);
-	while ((time_left(philo) >= 0) && (!philo->data->stop))
+	while ((time_left(philo) > 0) && (!philo->data->stop))
 	{
 		if (!lock_both_forks(philo))
 			break ;
@@ -76,7 +76,7 @@ int	create_philos(t_data *d)
 	{
 		d->philo[i].id = i + 1;
 		d->philo[i].nb_meals = 0;
-		d->philo[i].last_meal = ft_time();
+		d->philo[i].last_meal = d->start_time;
 		d->philo[i].data = d;
 		if (pthread_create(&(d->philo[i].th), NULL, &f, (void *)&(d->philo[i])))
 			return (0);

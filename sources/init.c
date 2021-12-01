@@ -6,7 +6,7 @@
 /*   By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 18:39:57 by cproesch          #+#    #+#             */
-/*   Updated: 2021/11/30 10:49:26 by cproesch         ###   ########.fr       */
+/*   Updated: 2021/12/01 15:56:51 by cproesch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	initialize_data(char **argv, t_data *data)
 		return (0);
 	data->count_full = 0;
 	data->stop = 0;
+	data->start_time = ft_time();
 	return (1);
 }
 
