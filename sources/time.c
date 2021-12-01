@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 15:35:10 by cproesch          #+#    #+#             */
-/*   Updated: 2021/12/01 11:23:55 by cproesch         ###   ########.fr       */
+/*   Created: 2021/12/01 11:51:13 by cproesch          #+#    #+#             */
+/*   Updated: 2021/12/01 11:51:42 by cproesch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+long	ft_time(void)
 {
-	t_data	*data;
+	struct timeval	tv;
+	long			res;
 
-	if ((argc < 5) || (argc > 6))
-	{
-		ft_putstr("Error: Must give 4 or 5 arguments\n");
-		return (1);
-	}
-	data = malloc (sizeof(t_data) * 1);
-	if ((!data) || (!initialize_data(argv, data)) || (!initialize_mutex(data))
-		|| (!create_philos(data)) || (!destroy_mutex(data)))
-	{
-		ft_putstr("Error\n");
-		ft_free(&data);
-		return (1);
-	}
-	ft_free(&data);
-	return (0);
+	gettimeofday(&tv, NULL);
+	res = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (res);
+}
+
+int	time_left(t_philo *philo)
+{
+	return (philo->data->tt_die - (ft_time() - philo->last_meal));
 }

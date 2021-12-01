@@ -65,18 +65,3 @@ void	ft_putstr(char *str)
 {
 	write(1, str, ft_strlen(str));
 }
-
-long	ft_time(void)
-{
-	struct timeval	tv;
-	long			res;
-
-	gettimeofday(&tv, NULL);
-	res = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (res);
-}
-
-int	time_left(t_philo *philo)
-{
-	return (philo->data->tt_die - (ft_time() - philo->last_meal));
-}

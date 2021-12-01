@@ -12,15 +12,6 @@
 
 #include "philo.h"
 
-void	unlock_both_forks(t_philo *philo)
-{
-	if (philo->id == 1)
-		pthread_mutex_unlock(&(philo->data->fork[philo->data->nb_ph - 1]));
-	else
-		pthread_mutex_unlock(&(philo->data->fork[philo->id - 2]));
-	pthread_mutex_unlock(&(philo->data->fork[philo->id - 1]));
-}
-
 void	check_death(t_philo *philo)
 {
 	long	to_death;
@@ -35,25 +26,22 @@ void	check_death(t_philo *philo)
 	return ;
 }
 
-int	lock_both_forks(t_philo *philo)
+void	some_must_think_first(t_philo *philo)
 {
-	if (philo->data->nb_ph == 1)
-		return (0);
-	if (((ft_time() - philo->last_meal) <= philo->data->tt_die) && (!philo->data->stop))
+	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&(philo->data->fork[philo->id - 1]));
-		if (((ft_time() - philo->last_meal) <= philo->data->tt_die) && (!philo->data->stop))
-		{
-			if (philo->id != 1)
-				pthread_mutex_lock(&(philo->data->fork[philo->id - 2]));
-			else
-				pthread_mutex_lock(&(philo->data->fork[philo->data->nb_ph - 1]));	
-			return (1);
-		}
-		else
-			pthread_mutex_unlock(&(philo->data->fork[philo->id - 1]));
+		printf("%ld %d is thinking\n", ft_time(), philo->id);
+		usleep(1000 * (philo->data->tt_eat));
 	}
-	return (0);
+	else if ((philo->data->nb_ph % 2 == 1) && (philo->id == philo->data->nb_ph))
+	{
+		printf("%ld %d is thinking\n", ft_time(), philo->id);
+		if ((time_left(philo) >= (2 * philo->data->tt_eat))
+			&& (!philo->data->stop))
+			usleep(1000 * 2 *(philo->data->tt_eat));
+		else if (!philo->data->stop)
+			usleep(1000 * time_left(philo));
+	}
 }
 
 void	*f(void *arg)
@@ -61,29 +49,15 @@ void	*f(void *arg)
 	t_philo			*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-	{
-		printf("%ld %d is thinking\n", ft_time(), philo->id);
-		usleep(5000);
-		// usleep(1000 * (philo->data->tt_eat));
-	}
-	// else if ((philo->data->nb_ph % 2 == 1) && (philo->id == philo->data->nb_ph))
-	// {
-	// 	printf("%ld %d is thinking\n", ft_time(), philo->id);
-	// 	if ((time_left(philo) >= (2 * philo->data->tt_eat))
-	// 		&& (!philo->data->stop))
-	// 		usleep(1000 * 2 *(philo->data->tt_eat));
-	// 	else if (!philo->data->stop)
-	// 		usleep(1000 * time_left(philo));
-	// }
-	while ((time_left(philo) > 0) && (!philo->data->stop))
+	some_must_think_first(philo);
+	while ((time_left(philo) >= 0) && (!philo->data->stop))
 	{
 		if (!lock_both_forks(philo))
 			break ;
 		ft_eat(philo);
 		unlock_both_forks(philo);
-		if ((time_left(philo) < 0)|| (philo->data->stop))
-			break;
+		if ((time_left(philo) < 0) || (philo->data->stop))
+			break ;
 		if (philo->data->count_full >= philo->data->nb_ph)
 			return (NULL);
 		ft_sleep(philo);
@@ -93,7 +67,7 @@ void	*f(void *arg)
 	return (NULL);
 }
 
-int	animate_phs(t_data *d)
+int	create_philos(t_data *d)
 {
 	int	i;
 

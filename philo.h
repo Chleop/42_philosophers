@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ph_H
-# define ph_H
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <pthread.h>
 # include <unistd.h>
@@ -27,28 +27,28 @@ typedef struct s_data
 	int				tt_die;
 	int				tt_eat;
 	int				tt_sleep;
-	pthread_mutex_t *fork;
+	pthread_mutex_t	*fork;
 	struct s_philo	*philo;
 	int				tt_think;
 	int				max_meals;
 	int				count_full;
 	int				stop;
-}   t_data;
+}	t_data;
 
-typedef struct  s_philo
+typedef struct s_philo
 {
 	int			id;
 	pthread_t	th;
 	t_data		*data;
 	long		last_meal;
 	int			nb_meals;
-}   t_philo;
+}	t_philo;
 
 int		ft_atoi(const char *str);
 void	ft_putstr(char *str);
 int		initialize_data(char **argv, t_data *data);
 int		initialize_mutex(t_data *data);
-int		animate_phs(t_data *data);
+int		create_philos(t_data *data);
 int		destroy_mutex(t_data *data);
 void	ft_free(t_data **data);
 long	ft_time(void);
@@ -56,5 +56,7 @@ int		time_left(t_philo *philo);
 void	ft_eat(t_philo *philo);
 void	ft_sleep(t_philo *philo);
 void	ft_think(t_philo *philo);
+void	unlock_both_forks(t_philo *philo);
+int		lock_both_forks(t_philo *philo);
 
 #endif

@@ -6,12 +6,13 @@
 #    By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 13:58:56 by cproesch          #+#    #+#              #
-#    Updated: 2021/11/30 11:05:39 by cproesch         ###   ########.fr        #
+#    Updated: 2021/12/01 11:56:31 by cproesch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS		=	sources/main.c sources/utils.c sources/init.c sources/close.c \
-				sources/life.c sources/eat_sleep_think.c
+				sources/philo.c sources/eat_sleep_think.c sources/lock_unlock.c \
+				sources/time.c
 
 OBJS		=	$(SRCS:.c=.o)
 
