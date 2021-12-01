@@ -33,7 +33,7 @@ void	some_must_think_first(t_philo *philo)
 		printf("%ld %d is thinking\n", ft_time(), philo->id);
 		usleep(1000 * (philo->data->tt_eat));
 	}
-	else if ((philo->data->nb_ph % 2 == 1) && (philo->id == philo->data->nb_ph))
+	else if ((philo->data->nb_ph != 1) && (philo->id == philo->data->nb_ph))
 	{
 		printf("%ld %d is thinking\n", ft_time(), philo->id);
 		if ((time_left(philo) >= (2 * philo->data->tt_eat))
