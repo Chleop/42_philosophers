@@ -55,6 +55,7 @@ void	ft_free(t_data **data);
 long	ft_time(void);
 int		time_left(t_philo *philo);
 void	ft_wait(long x);
+long	current_time(t_philo *philo);
 void	ft_eat(t_philo *philo);
 void	ft_sleep(t_philo *philo);
 void	ft_think(t_philo *philo);

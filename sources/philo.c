@@ -19,7 +19,7 @@ void	check_death(t_philo *philo)
 	if (!philo->data->stop)
 	{
 		philo->data->stop = 1;
-		to_death = (ft_time() - philo->data->start_time);
+		to_death = current_time(philo);
 		ft_wait(1);
 		printf("%ld %d died\n", to_death, philo->id);
 	}
@@ -30,12 +30,12 @@ void	some_must_think_first(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		printf("%ld %d is thinking\n", (ft_time() - philo->data->start_time), philo->id);
+		printf("%ld %d is thinking\n", current_time(philo), philo->id);
 		ft_wait(philo->data->tt_eat);
 	}
 	else if ((philo->data->nb_ph != 1) && (philo->id == philo->data->nb_ph))
 	{
-		printf("%ld %d is thinking\n", (ft_time() - philo->data->start_time), philo->id);
+		printf("%ld %d is thinking\n", current_time(philo), philo->id);
 		if ((time_left(philo) >= (2 * philo->data->tt_eat))
 			&& (!philo->data->stop))
 			ft_wait(2 *(philo->data->tt_eat));

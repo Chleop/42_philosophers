@@ -6,7 +6,7 @@
 /*   By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:24:25 by cproesch          #+#    #+#             */
-/*   Updated: 2021/12/01 15:59:52 by cproesch         ###   ########.fr       */
+/*   Updated: 2021/12/01 17:07:02 by cproesch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ int	lock_both_forks(t_philo *philo)
 	if ((time_left(philo) >= 0) && (!philo->data->stop))
 	{
 		pthread_mutex_lock(&(philo->data->fork[philo->id - 1]));
-		printf("%ld %d has taken a fork\n", (ft_time() - philo->data->start_time), philo->id);
-		if ((time_left(philo) >= 0) && (!philo->data->stop) && (philo->data->nb_ph != 1))
+		printf("%ld %d has taken a fork\n", current_time(philo), philo->id);
+		if ((time_left(philo) >= 0) && (!philo->data->stop)
+			&& (philo->data->nb_ph != 1))
 		{
 			if (philo->id != 1)
 				pthread_mutex_lock(&(philo->data->fork[philo->id - 2]));
 			else
 				pthread_mutex_lock(&(philo->data->fork[last_fork]));
-			printf("%ld %d has taken a fork\n", (ft_time() - philo->data->start_time), philo->id);
+			printf("%ld %d has taken a fork\n", current_time(philo), philo->id);
 			return (1);
 		}
 		else

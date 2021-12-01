@@ -6,7 +6,7 @@
 /*   By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:51:13 by cproesch          #+#    #+#             */
-/*   Updated: 2021/12/01 14:59:44 by cproesch         ###   ########.fr       */
+/*   Updated: 2021/12/01 17:06:34 by cproesch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,9 @@ void	ft_wait(long x)
 	start = ft_time();
 	while (ft_time() < (start + x))
 		usleep(100);
+}
+
+long	current_time(t_philo *philo)
+{
+	return ((long)(ft_time() - philo->data->start_time));
 }

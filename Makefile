@@ -6,7 +6,7 @@
 #    By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 13:58:56 by cproesch          #+#    #+#              #
-#    Updated: 2021/12/01 15:42:21 by cproesch         ###   ########.fr        #
+#    Updated: 2021/12/01 17:28:41 by cproesch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CC			=	gcc
 
 IFLAGS		=	-I.
 
-CFLAGS		=	-Wall -Wextra -Werror -pthread -D_REENTRANT -g $(IFLAGS) 
+CFLAGS		=	-Wall -Wextra -Werror -pthread -fsanitize=thread $(IFLAGS) 
 
 LFLAGS		=	-lpthread
 
@@ -32,7 +32,7 @@ RM			=	rm -rf
 				$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
 $(NAME):		$(OBJS)
-				$(CC) $(OBJS) $(LFLAGS) -o $(NAME)
+				$(CC) $(OBJS) $(LFLAGS) $(CFLAGS) -o $(NAME)
 
 all:			$(NAME)
 
