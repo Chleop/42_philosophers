@@ -38,13 +38,13 @@ int	ft_atoi(const char *str)
 	while ((str[i] == ' ') || ((str[i] >= '\t') && (str[i] <= '\r')))
 		i++;
 	if (check_non_num(i, str) < 0)
-		return (-1);
+		return (0);
 	while ((str[i] >= '0') && (str[i] <= '9'))
 	{
 		nbr = (nbr * 10) + (str[i] - 48);
 		i++;
 		if (nbr > 2147483647)
-			return (-1);
+			return (0);
 	}
 	return ((int)nbr);
 }
