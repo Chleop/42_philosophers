@@ -6,13 +6,12 @@
 #    By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 13:58:56 by cproesch          #+#    #+#              #
-#    Updated: 2021/12/01 17:28:41 by cproesch         ###   ########.fr        #
+#    Updated: 2021/12/02 13:03:45 by cproesch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=	sources/main.c sources/utils.c sources/init.c sources/close.c \
-				sources/philo.c sources/eat_sleep_think.c sources/lock_unlock.c \
-				sources/time.c
+SRCS		=	sources/main.c sources/utils.c sources/time.c sources/close.c \
+				sources/philo.c sources/eat_sleep_think.c sources/mutex.c 
 
 OBJS		=	$(SRCS:.c=.o)
 
@@ -22,7 +21,7 @@ CC			=	gcc
 
 IFLAGS		=	-I.
 
-CFLAGS		=	-Wall -Wextra -Werror -pthread -fsanitize=thread $(IFLAGS) 
+CFLAGS		=	-Wall -Wextra -Werror -pthread -fsanitize=thread -g3 $(IFLAGS) 
 
 LFLAGS		=	-lpthread
 

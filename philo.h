@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <limits.h>
 
 struct	s_philo;
 
@@ -31,8 +32,8 @@ typedef struct s_data
 	struct s_philo	*philo;
 	int				tt_think;
 	int				max_meals;
-	int				count_full;
 	int				stop;
+	pthread_mutex_t	mute_stop;
 	long			start_time;
 }	t_data;
 
@@ -61,5 +62,7 @@ void	ft_sleep(t_philo *philo);
 void	ft_think(t_philo *philo);
 void	unlock_both_forks(t_philo *philo);
 int		lock_both_forks(t_philo *philo);
+int		should_end(t_philo *philo);
+void	one_more_full(t_philo *philo);
 
 #endif

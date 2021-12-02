@@ -12,20 +12,6 @@
 
 #include "philo.h"
 
-void	check_death(t_philo *philo)
-{
-	long	to_death;
-
-	if (!philo->data->stop)
-	{
-		philo->data->stop = 1;
-		to_death = current_time(philo);
-		ft_wait(1);
-		printf("%ld %d died\n", to_death, philo->id);
-	}
-	return ;
-}
-
 void	some_must_think_first(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
@@ -37,10 +23,10 @@ void	some_must_think_first(t_philo *philo)
 	{
 		printf("%ld %d is thinking\n", current_time(philo), philo->id);
 		if ((time_left(philo) >= (2 * philo->data->tt_eat))
-			&& (!philo->data->stop))
+			&& (!should_end(philo)))
 			ft_wait(2 *(philo->data->tt_eat));
-		else if (!philo->data->stop)
-			ft_wait(time_left(philo));
+		else if (!should_end(philo))
+			ft_wait(time_left(philo) + 1);
 	}
 }
 
@@ -50,20 +36,18 @@ void	*f(void *arg)
 
 	philo = (t_philo *)arg;
 	some_must_think_first(philo);
-	while ((time_left(philo) > 0) && (!philo->data->stop))
+	while (!should_end(philo))
 	{
 		if (!lock_both_forks(philo))
 			break ;
 		ft_eat(philo);
 		unlock_both_forks(philo);
-		if ((time_left(philo) < 0) || (philo->data->stop))
+		if (should_end(philo))
 			break ;
-		if (philo->data->count_full >= philo->data->nb_ph)
-			return (NULL);
 		ft_sleep(philo);
 		ft_think(philo);
 	}
-	check_death(philo);
+	should_end(philo);
 	return (NULL);
 }
 
