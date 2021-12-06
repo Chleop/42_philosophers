@@ -31,9 +31,8 @@ void	ft_sleep(t_philo *philo)
 	{
 		printf("%ld %d is sleeping\n", current_time(philo), philo->id);
 		if (((time_left(philo) >= philo->data->tt_eat)
-			&& (!should_end(philo)))
-			&& ((time_left(philo) >= philo->data->tt_sleep)
-			|| (philo->data->max_meals == 1)))
+				&& ((time_left(philo) >= philo->data->tt_sleep)
+					|| (philo->data->max_meals == 1)) && (!should_end(philo))))
 			ft_wait(philo->data->tt_sleep);
 		else if (!should_end(philo))
 			ft_wait(time_left(philo) + 1);
@@ -42,9 +41,9 @@ void	ft_sleep(t_philo *philo)
 	{
 		printf("%ld %d is sleeping\n", current_time(philo), philo->id);
 		if (((time_left(philo) >= philo->data->tt_sleep)
-			&& (!should_end(philo))) && ((philo->data->max_meals == 1)
+				&& (!should_end(philo))) && ((philo->data->max_meals == 1)
 				|| (time_left(philo) >= (2 * philo->data->tt_eat))))
-				ft_wait(philo->data->tt_sleep);
+			ft_wait(philo->data->tt_sleep);
 		else if (!should_end(philo))
 			ft_wait(time_left(philo) + 1);
 	}

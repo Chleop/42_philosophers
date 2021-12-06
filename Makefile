@@ -6,7 +6,7 @@
 #    By: cproesch <cproesch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 13:58:56 by cproesch          #+#    #+#              #
-#    Updated: 2021/12/02 18:41:47 by cproesch         ###   ########.fr        #
+#    Updated: 2021/12/02 19:11:32 by cproesch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CC			=	gcc
 
 IFLAGS		=	-I.
 
-CFLAGS		=	-Wall -Wextra -Werror -pthread -fsanitize=address $(IFLAGS) 
+CFLAGS		=	-Wall -Wextra -Werror -pthread -fsanitize=thread $(IFLAGS) 
 
 LFLAGS		=	-lpthread
 

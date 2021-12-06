@@ -22,10 +22,8 @@ void	some_must_think_first(t_philo *philo)
 	else if ((philo->data->nb_ph != 1) && (philo->id == philo->data->nb_ph))
 	{
 		printf("%ld %d is thinking\n", current_time(philo), philo->id);
-		if ((time_left(philo) >= (2 * philo->data->tt_eat))
+		if ((time_left(philo) < (2 * philo->data->tt_eat))
 			&& (!should_end(philo)))
-			ft_wait(2 *(philo->data->tt_eat));
-		else if (!should_end(philo))
 			ft_wait(time_left(philo) + 1);
 	}
 }

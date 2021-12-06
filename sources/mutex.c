@@ -67,13 +67,17 @@ int	lock_both_forks(t_philo *philo)
 
 int	should_end(t_philo *philo)
 {
+	long	present;
+
 	pthread_mutex_lock(&(philo->data->mute_stop));
 	if (time_left(philo) < 0)
 	{
 		if (philo->data->stop != INT_MAX)
 		{
 			philo->data->stop = INT_MAX;
-			printf("%ld %d died\n", current_time(philo), philo->id);
+			present = current_time(philo);
+			ft_wait(10);
+			printf("%ld %d died\n", present, philo->id);
 		}
 		pthread_mutex_unlock(&(philo->data->mute_stop));
 		return (1);
